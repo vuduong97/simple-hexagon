@@ -1,13 +1,12 @@
-import { inject } from 'inversify';
-import { provide } from 'inversify-binding-decorators';
-import TYPES from '../../../common/type';
+import { Inject, Injectable } from '@nestjs/common';
 import { IPostRepository, IPostService } from '../interfaces';
 import { Post } from '../model';
+import { POST_REPOSITORY } from '../post.di-token';
 
-@provide(TYPES.PostService)
+@Injectable()
 export class PostService implements IPostService {
   constructor(
-    @inject(TYPES.PostRepository)
+    @Inject(POST_REPOSITORY)
     private readonly postRepository: IPostRepository,
   ) {}
 

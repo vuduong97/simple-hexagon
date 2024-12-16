@@ -1,7 +1,6 @@
-import TYPES from '../../../../common/type';
-import { provide } from 'inversify-binding-decorators';
-import { IPostRepository } from 'modules/post/interfaces';
-import { Post } from 'modules/post/model';
+import { Injectable } from '@nestjs/common';
+import { IPostRepository } from '../../interfaces';
+import { Post } from '../../model';
 
 const posts: Post[] = [
   {
@@ -13,7 +12,7 @@ const posts: Post[] = [
   },
 ];
 
-@provide(TYPES.PostRepository)
+@Injectable()
 export class PostInMemoryRepository implements IPostRepository {
   async findById(id: string): Promise<Post | null> {
     return Promise.resolve(posts.find((post) => post.id === id) || null);
