@@ -1,13 +1,13 @@
 import { Controller, Get, Inject, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { IPostService } from '../../interfaces';
 import { POST_SERVICE } from '../../post.di-token';
-import { PostService } from '../../service';
 
 @Controller('/v1/posts')
 export class PostHTTPController {
   constructor(
     @Inject(POST_SERVICE)
-    private readonly postService: PostService,
+    private readonly postService: IPostService,
   ) {}
 
   @Get('/:id')
