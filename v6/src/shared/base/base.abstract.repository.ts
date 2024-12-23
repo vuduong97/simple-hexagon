@@ -6,8 +6,8 @@ import {
   UpdateWriteOpResult,
 } from 'mongoose';
 import { IFindAllResponse } from 'src/interfaces/common';
-import { BaseEntity } from 'src/schemas/base.schema';
 import { IBaseRepository } from './base.interface.repository';
+import { BaseEntity } from './base.schema';
 
 export abstract class BaseRepositoryAbstract<T extends BaseEntity>
   implements IBaseRepository<T>
