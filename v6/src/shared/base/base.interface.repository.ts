@@ -1,5 +1,5 @@
-import { IFindAllResponse } from "@/interfaces/common";
-import { FilterQuery, UpdateQuery, UpdateWriteOpResult } from "mongoose";
+import { FilterQuery, UpdateQuery, UpdateWriteOpResult } from 'mongoose';
+import { IFindAllResponse } from 'src/interfaces/common';
 
 export interface IBaseRepository<T> {
   create(dto: T | any): Promise<T>;
@@ -10,13 +10,19 @@ export interface IBaseRepository<T> {
 
   findOneByCondition(condition?: object, projection?: string): Promise<T>;
 
-  findAll(condition: FilterQuery<T>, options?: object): Promise<IFindAllResponse<T>>;
+  findAll(
+    condition: FilterQuery<T>,
+    options?: object,
+  ): Promise<IFindAllResponse<T>>;
 
   count(condition: FilterQuery<T>): Promise<number>;
 
   update(id: string, dto: Partial<T>): Promise<T>;
 
-  updateMany(condition: FilterQuery<T>, dto: UpdateQuery<T>): Promise<UpdateWriteOpResult>;
+  updateMany(
+    condition: FilterQuery<T>,
+    dto: UpdateQuery<T>,
+  ): Promise<UpdateWriteOpResult>;
 
   softDelete(id: string): Promise<T>;
 

@@ -1,9 +1,17 @@
-import { IFindAllResponse } from "@/interfaces/common";
-import { BaseEntity } from "@/schemas/base.schema";
-import { FilterQuery, Model, QueryOptions, UpdateQuery, UpdateWriteOpResult } from "mongoose";
-import { IBaseRepository } from "./base.interface.repository";
+import {
+  FilterQuery,
+  Model,
+  QueryOptions,
+  UpdateQuery,
+  UpdateWriteOpResult,
+} from 'mongoose';
+import { IFindAllResponse } from 'src/interfaces/common';
+import { BaseEntity } from 'src/schemas/base.schema';
+import { IBaseRepository } from './base.interface.repository';
 
-export abstract class BaseRepositoryAbstract<T extends BaseEntity> implements IBaseRepository<T> {
+export abstract class BaseRepositoryAbstract<T extends BaseEntity>
+  implements IBaseRepository<T>
+{
   protected constructor(private readonly model: Model<T>) {
     this.model = model;
   }
@@ -35,7 +43,11 @@ export abstract class BaseRepositoryAbstract<T extends BaseEntity> implements IB
     // Kiểm tra nếu không có deleted_at trong condition thì mặc định là null
     const [count, items] = await Promise.all([
       this.model.countDocuments({ ...condition, deleted_at: null }),
-      this.model.find({ ...condition, deleted_at: null }, options?.projection, options),
+      this.model.find(
+        { ...condition, deleted_at: null },
+        options?.projection,
+        options,
+      ),
     ]);
     return {
       count,
@@ -52,10 +64,17 @@ export abstract class BaseRepositoryAbstract<T extends BaseEntity> implements IB
   }
 
   async update(id: string, dto: Partial<T>): Promise<T> {
-    return await this.model.findOneAndUpdate({ _id: id, deleted_at: null }, dto, { new: true });
+    return await this.model.findOneAndUpdate(
+      { _id: id, deleted_at: null },
+      dto,
+      { new: true },
+    );
   }
 
-  async updateMany(condition: FilterQuery<T>, dto: UpdateQuery<T>): Promise<UpdateWriteOpResult> {
+  async updateMany(
+    condition: FilterQuery<T>,
+    dto: UpdateQuery<T>,
+  ): Promise<UpdateWriteOpResult> {
     // Kiểm tra nếu không có deleted_at trong condition thì mặc định là null
     const updateResult = await this.model
       .updateMany({ ...condition, deleted_at: null }, dto)

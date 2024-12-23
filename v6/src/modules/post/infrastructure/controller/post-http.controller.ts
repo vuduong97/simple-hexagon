@@ -1,7 +1,18 @@
-import { Controller, Get, Inject, Param, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  Param,
+  Post,
+  Res,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { IPostService } from '../../interfaces';
 import { POST_SERVICE } from '../../post.di-token';
+import { CreatePostDto } from '../../model/create-post.dto';
 
 @Controller('/v1/posts')
 export class PostHTTPController {
@@ -11,18 +22,25 @@ export class PostHTTPController {
   ) {}
 
   @Get('/:id')
+  @HttpCode(HttpStatus.OK)
   async getPostAPI(@Param('id') id: string, @Res() res: Response) {
     const post = await this.postService.getPost(id);
 
     if (!post) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         message: 'Post not found',
       });
       return;
     }
 
-    res.status(200).json({
+    res.status(HttpStatus.OK).json({
       data: post,
     });
+  }
+
+  @Post('/')
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() createPostDto: CreatePostDto) {
+    return await this.postService.create(createPostDto);
   }
 }
